@@ -4,14 +4,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int score = 7;
-    public int speed = 10;
+    public float speed;
+    public float xRange;
+    public float yRange;
     // Start is called before the first frame update
     void Start()
     {
 
 
     }   
+
+    private void LateUpdate()
+    {
+
+        if (transform.position.x > xRange)
+        {
+            transform.position = new Vector2(xRange, transform.position.y);
+        }
+
+        if(transform.position.x < -xRange)
+        {
+            transform.position = new Vector2(-xRange, transform.position.y);
+        }
+
+
+        if (transform.position.y > yRange)
+        {
+            transform.position = new Vector2(yRange, transform.position.y);
+        }
+
+        if (transform.position.y < -yRange)
+        {
+            transform.position = new Vector2(-yRange, transform.position.y);
+        }
+    }
+
+    
+       
+
+
+    
 
     // Update is called once per frame
     void Update()
