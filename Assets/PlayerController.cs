@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float xRange;
     public float yRange;
+    public GameObject Puck;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +31,12 @@ public class PlayerController : MonoBehaviour
 
         if (transform.position.y > yRange)
         {
-            transform.position = new Vector2(yRange, transform.position.y);
+            transform.position = new Vector2(transform.position.x, yRange);
         }
 
         if (transform.position.y < -yRange)
         {
-            transform.position = new Vector2(-yRange, transform.position.y);
+            transform.position = new Vector2(transform.position.x, -yRange);
         }
     }
 
@@ -48,6 +49,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Instantiate(Puck,new Vector2(2,3) , Quaternion.identity);
+
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         Debug.Log(moveHorizontal);
