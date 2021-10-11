@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Instantiate(Puck,new Vector2(2,3) , Quaternion.identity);
+        Instantiate(Puck,new Vector2(Random.Range(-xRange,xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
 
 
         float moveHorizontal = Input.GetAxis("Horizontal");
