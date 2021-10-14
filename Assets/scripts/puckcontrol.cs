@@ -14,7 +14,6 @@ public class puckcontrol : MonoBehaviour
         moveDirection = direction[Random.Range(0, 4)];
         Debug.Log("moveDirection = " + moveDirection);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -25,18 +24,22 @@ public class puckcontrol : MonoBehaviour
 
         if (moveDirection == 1)
         {
-            transform.Translate(transform.right * puckSpeed * Time.deltaTime);
+            transform.Translate(transform.up * -puckSpeed * Time.deltaTime);
         }
 
         if (moveDirection == 2)
         {
-            transform.Translate(transform.up * -puckSpeed * Time.deltaTime);
+            transform.Translate(transform.right * -puckSpeed * Time.deltaTime);
         }
 
         if (moveDirection == 3)
         {
-            transform.Translate(transform.right * -puckSpeed * Time.deltaTime);
+            transform.Translate(transform.right * puckSpeed * Time.deltaTime);
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("WALLLLLLLLLLLLLL");
+        puckSpeed = -puckSpeed;
+    }
 }
-
