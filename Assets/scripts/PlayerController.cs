@@ -9,11 +9,14 @@ public class PlayerController : MonoBehaviour
     public float yRange;
     public GameObject Puck;
     public GameObject Blocky;
+    //public int Score;
+    public GameObject scoreText;
+    public GameObject gameOverText;
     // Start is called before the first frame update
     void Start()
     {
         Instantiate(Blocky, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
-
+        //score = 0;
     }   
 
     private void LateUpdate()
@@ -48,16 +51,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Instantiate(Puck, new Vector2(Random.Range(-xRange,xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
-        GameObject[] puckArray;
-        puckArray = GameObject.FindGameObjectsWithTag("Puck");
-        Debug.Log("Puck Count: " + puckArray.Length);
+
+        //Instantiate(Puck, new Vector2(Random.Range(-xRange,xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
+        //GameObject[] puckArray;
+        //puckArray = GameObject.FindGameObjectsWithTag("Puck");
+        //Debug.Log("Puck Count: " + puckArray.Length);
 
 
-        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
         Debug.Log(moveHorizontal);
 
-        float moveVertical = Input.GetAxis("Vertical");
+        float moveVertical = Input.GetAxisRaw("Vertical");
 
         Vector2 movement = new Vector2(moveHorizontal,moveVertical);
 
@@ -65,12 +69,49 @@ public class PlayerController : MonoBehaviour
 
             
     }
-    void OnTriggerEnter(Collider other)
+     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Blocky"))
+        if (other.gameObject.CompareTag("Blocky"))       
         {
+            Debug.Log("You hit a blocky!!");
             Destroy(other.gameObject);
-            Debug.Log("Hit Blocky!");
+            Instantiate(Blocky, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
+            Instantiate(Puck, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
+            //Score += 5;
+            //Debug.Log("Your Score: " + Score);
+
+            scoreText.GetComponent<ScoreKeeper>().UpdateScore();
+        }
+
+
+        if (other.gameObject.CompareTag("Puck"))
+        {
+            gameOverText.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
+
+    public void NewGame()
+    {
+     Debug.Log("Its a new game!");
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            //Destroy all Pucks
+            GameObject[] allPucks = GameObject.FindGameObjectWithTag("Pucks");
+            foreach (GameObject dude in allPucks)
+                GameObject.Destroy(dude);
+            //Destroy all Blocky's
+            GameObject[] allBlockys = GameObject.FindGameObjectWithTag("Blocky");
+            foreach (GameObject dude in allBlockys)
+                GameObject.Destroy(dude);
+
+            Instantiate(Blocky, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
+            Instantiate(Puck, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
+            gameOverText.SetActive(false);
+            Time.timeScale = 1;
+            //Set sscore to 0
+            scoreText.GetComponent<ScoreKeeper>().ScoreValue = 0;
+
         }
     }
 }
