@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
 
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        Debug.Log(moveHorizontal);
+        print("moveHorizontal value: " + moveHorizontal);
 
         float moveVertical = Input.GetAxisRaw("Vertical");
 
@@ -73,13 +73,13 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Blocky"))       
         {
-            Debug.Log("You hit a blocky!!");
             Destroy(other.gameObject);
             Instantiate(Blocky, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
             Instantiate(Puck, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
             //Score += 5;
             //Debug.Log("Your Score: " + Score);
 
+            scoreText.GetComponent<ScoreKeeper>().scoreValue += 5;
             scoreText.GetComponent<ScoreKeeper>().UpdateScore();
         }
 
@@ -97,20 +97,27 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.N))
         {
             //Destroy all Pucks
-            GameObject[] allPucks = GameObject.FindGameObjectWithTag("Pucks");
+            GameObject[] allPucks = GameObject.FindGameObjectsWithTag("Pucks");
             foreach (GameObject dude in allPucks)
                 GameObject.Destroy(dude);
             //Destroy all Blocky's
-            GameObject[] allBlockys = GameObject.FindGameObjectWithTag("Blocky");
+            GameObject[] allBlockys = GameObject.FindGameObjectsWithTag("Blocky");
             foreach (GameObject dude in allBlockys)
                 GameObject.Destroy(dude);
 
+            transform.position = new Vector2(0, 0);
             Instantiate(Blocky, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
             Instantiate(Puck, new Vector2(Random.Range(-xRange, xRange), Random.Range(-yRange, yRange)), Quaternion.identity);
             gameOverText.SetActive(false);
             Time.timeScale = 1;
-            //Set sscore to 0
-            scoreText.GetComponent<ScoreKeeper>().ScoreValue = 0;
+
+            //Set sscore to zero
+            scoreText.GetComponent<ScoreKeeper>().scoreValue = 0;
+            scoreText.GetComponent<ScoreKeeper>().UpdateScore();
+            Debug.Log("score: " + scoreText.GetComponent<ScoreKeeper>().scoreValue);
+
+
+
 
         }
     }
